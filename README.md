@@ -6,7 +6,7 @@
 
 - Simple http server for search books by title
 
-You can find project description in this [link]().
+You can find project description in this [link](https://github.com/alichz2001/fidibo/blob/master/task.pdf).
 
 
 ## Project requirements
@@ -38,7 +38,7 @@ make run
 -----------------
 ## API Documentation
 
-**Note:** You can find the full API Postman collection in this [link]().
+**Note:** You can find the full API Postman collection in this [link](https://github.com/alichz2001/fidibo/blob/master/fidibo.postman_collection.json).
 
 #### 1\. Search Book
 
