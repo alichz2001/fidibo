@@ -1,0 +1,1 @@
+mysql -hmysql -uroot -p1234 --verbose < /db.sql

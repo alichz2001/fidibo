@@ -1,0 +1,45 @@
+{
+	"info": {
+		"_postman_id": "b5688c88-ea1b-4ea6-b112-167f4015175f",
+		"name": "fidibo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6252097"
+	},
+	"item": [
+		{
+			"name": "search book",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "book_service",
+			"value": "localhost:8080/v1",
+			"type": "string"
+		}
+	]
+}

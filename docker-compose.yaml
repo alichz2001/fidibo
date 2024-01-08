@@ -1,0 +1,93 @@
+version: "3"
+
+services:
+
+  mysql:
+    image: mysql
+    hostname: "mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    expose:
+      - '3306:3306'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "mysql"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      fidibo:
+
+  redis:
+    image: redis
+    hostname: "redis"
+    expose:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      fidibo:
+
+  web:
+    build:
+      dockerfile: ./build/web.DOCKERFILE
+      context: .
+    hostname: "web"
+    environment:
+      - PORT=9091
+      - MYSQL_DSN=book_service_user:book_service_password@tcp(mysql:3306)/fidibo
+      - REDIS_DSN=redis://redis:6379/0
+      - CACHE_TTL=10
+    ports:
+      - "8080:9091"
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
+      fake_data_generator:
+        condition: service_completed_successfully
+    networks:
+      fidibo:
+
+  migrator:
+    image: mysql
+    restart: no
+    entrypoint: ["sh", "/migrator_entrypoint.sh"]
+    volumes:
+      - type: bind
+        source: ./db.sql
+        target: /db.sql
+      - type: bind
+        source: ./build/migrator_entrypoint.sh
+        target: /migrator_entrypoint.sh
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      fidibo:
+
+  fake_data_generator:
+    build:
+      dockerfile: ./build/fake_generator.DOCKERFILE
+      context: .
+    restart: no
+    environment:
+      - PORT=000
+      - MYSQL_DSN=book_service_user:book_service_password@tcp(mysql:3306)/fidibo
+      - CACHE_TTL=10
+    command: fake_generator -count 100 -per_chunk_count 10
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
+    networks:
+      fidibo:
+
+volumes:
+  mysql_vol:
+networks:
+  fidibo:
