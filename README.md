@@ -5,6 +5,7 @@
 ## Service
 
 - Simple http server for search books by title
+- Fake data generator.(see docker-compose.yaml)
 
 You can find project description in this [link](https://github.com/alichz2001/fidibo/blob/master/task.pdf).
 
@@ -65,6 +66,7 @@ make run
 
 
 ## Personal TODO
+- [ ] add validations.
 - [ ] add pagination! now all matched data will return in result.
 - [ ] make better response messages for web client.
 - [ ] rate-limiting and heath-checking.
